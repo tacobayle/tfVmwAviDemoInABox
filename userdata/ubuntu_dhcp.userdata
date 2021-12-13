@@ -1,0 +1,38 @@
+#cloud-config
+users:
+  - default
+
+ssh_pwauth: True
+
+chpasswd:
+  list: |
+    ubuntu:${password}
+  expire: False
+
+hostname: ${hostname}
+
+write_files:
+  - content: |
+      #!/bin/bash
+      # apt config
+      sudo apt update
+      sudo apt install python3.7
+      sudo apt install -y python3-pip python3-jmespath language-pack-en
+      pip3 install --upgrade pip
+      pip3 install ansible==${ansible_version}
+      sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+      sudo apt-get install -y docker-ce
+      sudo usermod -a -G docker ${username}
+      su - ${username}
+      ping www.google.com -c 1
+      ping foo -c 1
+      while [ $? -ne 0 ] ; do sleep 5 ; docker login --username ${docker_registry_username} --password ${docker_registry_password}  ; done
+      docker pull avinetworks/controller:${avi_version}
+      echo "cloud init done" | tee /tmp/cloudInitDone.log
+    path: /opt/bootstrap.sh
+    permissions: "0755"
+
+runcmd:
+  - /opt/bootstrap.sh

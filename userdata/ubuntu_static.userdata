@@ -1,0 +1,34 @@
+#cloud-config
+users:
+  - default
+
+ssh_pwauth: True
+
+chpasswd:
+  list: |
+    ubuntu:${password}
+  expire: False
+
+hostname: ${hostname}
+
+write_files:
+  - content: |
+      #!/bin/bash
+      # apt config
+      sudo apt update
+      sudo apt install -y apache2
+      sudo mv /var/www/html/index.html /var/www/html/index.html.old
+      echo -e "Hello World - Node is $(hostname)" | sudo tee /var/www/html/index.html
+      echo "cloud init done" | tee /tmp/cloudInitDone.log
+    path: /opt/bootstrap.sh
+    permissions: "0755"
+  - encoding: base64
+    content: ${network_config}
+    path: /etc/netplan/50-cloud-init.yaml
+  - content: |
+      network: {config: disabled}
+    path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+
+runcmd:
+  - netplan apply
+  - /opt/bootstrap.sh
