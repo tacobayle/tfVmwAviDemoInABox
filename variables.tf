@@ -70,7 +70,7 @@ variable "content_library" {
 variable "ubuntu" {
   type = map
   default = {
-    basename = "ubuntu-tf-"
+    basename = "avi-in-a-box-tf-"
     count = 1
     username = "ubuntu"
     cpu = 24
