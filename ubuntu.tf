@@ -108,6 +108,7 @@ data "template_file" "ubuntu_userdata_dhcp" {
     docker_registry_username = var.docker_registry_username
     docker_registry_password = var.docker_registry_password
     avi_version = var.avi_version
+    avi_version_short = split("-", var.avi_version)[0]
     ansible_version = var.ansible_version
   }
 }
