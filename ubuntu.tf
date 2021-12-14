@@ -28,6 +28,11 @@ data "template_file" "ubuntu_userdata_static" {
     netplanFile = var.ubuntu.netplanFile
     hostname = "${var.ubuntu.basename}${random_string.ubuntu_name_id_static[count.index].result}"
     network_config  = base64encode(data.template_file.network[count.index].rendered)
+    docker_registry_username = var.docker_registry_username
+    docker_registry_password = var.docker_registry_password
+    avi_version = var.avi_version
+    avi_version_short = split("-", var.avi_version)[0]
+    ansible_version = var.ansible_version
   }
 }
 

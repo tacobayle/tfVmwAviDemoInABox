@@ -23,7 +23,6 @@ write_files:
       pip3 install ansible==${ansible_version}
       pip3 install avisdk==${avi_version_short}
       pip3 install docker-py --upgrade
-      sudo -u ubuntu ansible-galaxy install -f avinetworks.avicontroller
       sudo ansible-galaxy collection install community.network
       sudo ansible-galaxy install avinetworks.docker
       sudo ansible-galaxy install avinetworks.avicontroller
