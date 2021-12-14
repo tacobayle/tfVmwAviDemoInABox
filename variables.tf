@@ -63,7 +63,7 @@ variable "dhcp" {
 variable "content_library" {
   default = {
     basename = "content_library_tf_"
-    source_url = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.ova"
+    source_url = "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.ova"
   }
 }
 

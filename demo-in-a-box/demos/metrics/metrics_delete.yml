@@ -1,0 +1,4 @@
+---
+- import_playbook: influxdb/influxdb-delete.yml
+- import_playbook: avimetrics/avimetrics-delete.yml
+- import_playbook: grafana/grafana-delete.yml

@@ -162,4 +162,10 @@ resource "vsphere_virtual_machine" "ubuntu_dhcp" {
       "while [ ! -f /tmp/cloudInitDone.log ]; do sleep 1; done"
     ]
   }
+
+  provisioner "file" {
+    source      = demo-in-a-box
+    destination = "~/demo-in-a-box"
+  }
+
 }
