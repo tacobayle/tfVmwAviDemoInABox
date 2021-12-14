@@ -164,7 +164,7 @@ resource "vsphere_virtual_machine" "ubuntu_dhcp" {
   }
 
   provisioner "file" {
-    source      = demo-in-a-box
+    source      = "demo-in-a-box"
     destination = "~/demo-in-a-box"
   }
 
