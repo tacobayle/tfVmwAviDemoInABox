@@ -1,0 +1,1 @@
+cd ~/tfVmwAviDemoInABox  ; terraform destroy -auto-approve ; cd ~ ; rm -fr tfVmwAviDemoInABox ; git clone https://github.com/tacobayle/tfVmwAviDemoInABox ; cd tfVmwAviDemoInABox ; terraform apply -auto-approve
