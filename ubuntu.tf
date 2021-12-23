@@ -51,7 +51,7 @@ resource "random_string" "ubuntu_name_id_static" {
 }
 
 //resource "vsphere_virtual_machine" "ubuntu_static" {
-//  count            = (var.dhcp == false ? length(var.ubuntu_ip4_addresses) : 0)
+//  count            = (var.dhcp == false ? 1 : 0)
 //  name             = "${var.ubuntu.basename}${random_string.ubuntu_name_id_static[count.index].result}"
 //  datastore_id     = data.vsphere_datastore.datastore.id
 //  resource_pool_id = data.vsphere_resource_pool.pool.id

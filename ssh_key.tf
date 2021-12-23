@@ -11,7 +11,7 @@ resource "local_file" "private_key" {
 }
 
 resource "null_resource" "clear_ssh_key_locally_static" {
-  count = (var.dhcp == false ? length(var.ubuntu_ip4_addresses) : 0)
+  count = (var.dhcp == false ? 1 : 0)
   provisioner "local-exec" {
     command = "ssh-keygen -f \"/home/ubuntu/.ssh/known_hosts\" -R \"${split("/", var.ubuntu_ip4_address)[0]}\" || true"
   }
