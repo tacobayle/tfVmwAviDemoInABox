@@ -1,9 +1,9 @@
-output "ubuntu_static_ips" {
-  value = var.dhcp == false ? var.ubuntu_ip4_addresses.* : null
-}
+//output "ubuntu_static_ips" {
+//  value = var.dhcp == false ? var.ubuntu_ip4_addresses.* : null
+//}
 
-output "ubuntu_dhcp_ips" {
-  value = var.dhcp == true ? vsphere_virtual_machine.ubuntu_dhcp.*.default_ip_address : null
+output "ubuntu_ip" {
+  value = var.dhcp == true ? vsphere_virtual_machine.ubuntu_dhcp.*.default_ip_address : split("/", var.ubuntu_ip4_address)[0]
 }
 
 output "ubuntu_username" {

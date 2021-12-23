@@ -30,8 +30,8 @@ variable "vcenter" {
   }
 }
 
-variable "ubuntu_ip4_addresses" {
-  default = ["10.206.112.56/22", "10.206.112.57/22"]
+variable "ubuntu_ip4_address" {
+  default = "10.206.112.56/22"
 }
 
 variable "gateway4" {
