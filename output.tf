@@ -3,7 +3,7 @@
 //}
 
 output "ubuntu_ip" {
-  value = var.dhcp == true ? vsphere_virtual_machine.ubuntu_dhcp.*.default_ip_address : split("/", var.ubuntu_ip4_address)[0]
+  value = var.dhcp == true ? vsphere_virtual_machine.ubuntu_dhcp[0].default_ip_address : split("/", var.ubuntu_ip4_address)[0]
 }
 
 output "ubuntu_username" {
