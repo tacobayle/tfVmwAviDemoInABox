@@ -17,3 +17,7 @@ output "ubuntu_password" {
 output "ssh_private_key_path" {
   value = "~/.ssh/${var.ssh_key.private_key_name}.pem"
 }
+
+output "ssh_connect_to_ubuntu_VM" {
+  value = var.dhcp == true ? "ssh -i ~/.ssh/${var.ssh_key.private_key_name}.pem -o StrictHostKeyChecking=no ubuntu@${vsphere_virtual_machine.ubuntu_dhcp[0].default_ip_address}" : "ssh -i ~/.ssh/${var.ssh_key.private_key_name}.pem -o StrictHostKeyChecking=no ubuntu@${split("/", var.ubuntu_ip4_address)[0]}"
+}
