@@ -178,7 +178,7 @@ resource "vsphere_virtual_machine" "ubuntu" {
 resource "null_resource" "ansible" {
   depends_on = [vsphere_virtual_machine.ubuntu]
   connection {
-    host = var.dhcp == true ? vsphere_virtual_machine.ubuntu.default_ip_address : split("/", var.ubuntu_ip4_address)[0]
+    host = var.dhcp == true ? vsphere_virtual_machine.ubuntu[0].default_ip_address : split("/", var.ubuntu_ip4_address)[0]
     type = "ssh"
     agent = false
     user = "ubuntu"
