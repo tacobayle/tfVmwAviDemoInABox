@@ -19,6 +19,7 @@ write_files:
       sudo apt install python3.7
       sudo apt install -y python3-pip python3-jmespath language-pack-en
       sudo apt install -y expect
+      sudo apt-get install -y unzip
       pip3 install --upgrade pip
       pip3 install ansible==${ansible_version}
       pip3 install avisdk==${avi_version_short}

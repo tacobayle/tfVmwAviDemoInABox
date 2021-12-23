@@ -118,7 +118,7 @@ data "template_file" "ubuntu_userdata_dhcp" {
   }
 }
 
-resource "vsphere_virtual_machine" "ubuntu_dhcp" {
+resource "vsphere_virtual_machine" "ubuntu" {
   count            = 1
   name             = "${var.ubuntu.basename}${random_string.ubuntu_name_id[count.index].result}"
   datastore_id     = data.vsphere_datastore.datastore.id
@@ -172,5 +172,23 @@ resource "vsphere_virtual_machine" "ubuntu_dhcp" {
   provisioner "file" {
     source      = "demo-in-a-box"
     destination = "~/demo-in-a-box"
+  }
+}
+
+resource "null_resource" "ansible" {
+  depends_on = [vsphere_virtual_machine.ubuntu]
+  connection {
+    host = var.dhcp == true ? vsphere_virtual_machine.ubuntu.default_ip_address : split("/", var.ubuntu_ip4_address)[0]
+    type = "ssh"
+    agent = false
+    user = "ubuntu"
+    private_key = tls_private_key.ssh.private_key_pem
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "cd demo-in-a-box",
+      "sudo /bin/bash demo-install.sh"
+    ]
   }
 }
