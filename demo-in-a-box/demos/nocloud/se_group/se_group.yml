@@ -1,0 +1,23 @@
+---
+- hosts: controllers
+  vars_files:
+    - ../../../vars/avi_details.yaml
+  vars:
+    ansible_python_interpreter: python3      
+  
+  
+  
+
+  tasks:
+    - name: Configure tunnel mode in service engine group
+      community.network.avi_serviceenginegroup:
+        controller: "{{ controller_ip }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: present
+        api_version: "{{ api_version }}"
+        name: "Default-Group"
+        se_tunnel_mode: "2"
+        realtime_se_metrics:
+            enabled: true
+            duration: 0

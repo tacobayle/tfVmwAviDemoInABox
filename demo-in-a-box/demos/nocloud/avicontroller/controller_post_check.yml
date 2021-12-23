@@ -1,0 +1,36 @@
+---
+- hosts: controllers
+  become: True
+  vars_files:
+    - ../../../vars/avi_details.yaml
+  vars:
+    ansible_python_interpreter: python3      
+  
+  
+  
+
+  tasks:
+    - name:  Pull controller systemconfiguration
+      community.network.avi_api_session:
+        controller: "{{ controller_ip }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        api_version: "{{ api_version }}"
+        tenant: "{{ tenant | default('admin',true) }}"
+        http_method: get
+        path: systemconfiguration
+      ignore_errors: True
+      register: api_results
+
+    - name: Modify welcome_workflow_complete
+      community.network.avi_systemconfiguration:
+        avi_api_update_method: patch
+        avi_api_patch_op: replace
+        controller: "{{ controller_ip }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        tenant: "{{ tenant | default('admin',true) }}"
+        api_version: "{{ api_version }}"
+        welcome_workflow_complete: yes
+      when: api_results.obj.welcome_workflow_complete is defined and api_results.obj.welcome_workflow_complete == false
+      

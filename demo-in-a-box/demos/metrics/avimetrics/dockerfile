@@ -1,0 +1,25 @@
+############################################################
+# Dockerfile to build python avi-monitor script container
+# Based on alpine:edge
+############################################################
+
+# Set the base image to alpine:edge
+FROM avinetworks/avi-metrics:latest
+
+# Set the working directory
+WORKDIR /usr/src/avi
+
+# File Author / Maintainer
+MAINTAINER mkarnowski@avinetworks.com
+
+
+################## BEGIN INSTALLATION ######################
+
+# Set Docker environment variable
+ENV EN_DOCKER=True
+
+# Copy scripts to directory
+COPY "avi_controllers.json" "/usr/src/avi"
+COPY "influxdb.json" "/usr/src/avi"
+
+

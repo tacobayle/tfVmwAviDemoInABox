@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    ansible_python_interpreter: python3      
+
+  tasks:
+    - name: Install docker-py
+      pip:
+        name: docker-py
+
+    - name: Create a network with options
+      docker_network:
+        name: avinet
+        driver: bridge
+        ipam_config:
+          - subnet: 169.254.0.0/17
+            gateway: 169.254.0.1
+            iprange: 169.254.0.0/17
+        appends: yes
