@@ -408,7 +408,7 @@ check_for_change_version
 retrieve_avi_versions
 set_controller_sizes
 distro_check
-dependency_check
+#dependency_check
 #download_files
 playbook_install_demo
 

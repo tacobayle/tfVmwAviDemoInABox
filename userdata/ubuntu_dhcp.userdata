@@ -14,33 +14,62 @@ hostname: ${hostname}
 write_files:
   - content: |
       #!/bin/bash
-      # apt config
-      sudo apt update
-      sudo apt install python3.7
-      sudo apt install -y python3-pip python3-jmespath language-pack-en
-      sudo apt install -y expect
-      sudo apt-get install -y unzip
-      pip3 install --upgrade pip
-      pip3 install ansible==${ansible_version}
-      pip3 install avisdk==${avi_version_short}
-      pip3 install docker-py --upgrade
-      sudo ansible-galaxy collection install community.network
-      sudo ansible-galaxy install avinetworks.docker
-      sudo ansible-galaxy install avinetworks.avicontroller
-      sudo ansible-galaxy install avinetworks.avisdk
-      sudo ansible-galaxy install avinetworks.aviconfig
-      sudo sysctl -w net.ipv4.ip_forward=1
-      sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-      sudo apt-get install -y docker-ce
+      run_cmd() {
+        retry=10
+        pause=60
+        attempt=0
+        echo "############################################################################################"
+        while [ $attempt -ne $retry ]; do
+          if eval "$@"; then
+            echo "$1 PASSED"
+            break
+          else
+            echo "$1 FAILED"
+          fi
+          ((attempt++))
+          sleep $pause
+          if [ $attempt -eq $retry ]; then
+            echo "$1 FAILED after $retry retries" | tee /tmp/cloudInitFailed.log
+            exit 255
+          fi
+        done
+      }
+      run_cmd '! sudo apt update | grep Err'
+      run_cmd 'sudo apt install -y expect apt-transport-https ca-certificates curl gnupg-agent software-properties-common; ls /usr/bin/expect'
+      run_cmd 'sudo apt-get install -y unzip; ls /usr/bin/unzip'
+      run_cmd 'sudo apt install -y python3-pip; ls /usr/bin/pip3'
+      run_cmd 'sudo apt install -y python3-jmespath; pip3 list | grep jmespath'
+      run_cmd 'pip3 install --upgrade pip'
+      run_cmd 'pip3 install ansible==${ansible_version}; ls /usr/local/bin/ansible-playbook'
+      run_cmd 'pip3 install avisdk==${avi_version_short}; pip3 list | grep avisdk'
+      run_cmd 'pip3 install docker-py --upgrade; pip3 list | grep "\<docker-py\>"'
+      run_cmd 'sudo ansible-galaxy collection install community.network; sudo ansible-galaxy collection list | grep community.network'
+      run_cmd 'sudo ansible-galaxy install avinetworks.docker; sudo ansible-galaxy role list | grep avinetworks.docker'
+      run_cmd 'sudo ansible-galaxy install avinetworks.avicontroller; sudo ansible-galaxy role list | grep avinetworks.'avicontroller
+      run_cmd 'sudo ansible-galaxy install avinetworks.avisdk; sudo ansible-galaxy role list | grep avinetworks.avisdk'
+      run_cmd 'sudo ansible-galaxy install avinetworks.aviconfig; sudo ansible-galaxy role list | grep avinetworks.aviconfig'
+      run_cmd 'sudo sysctl -w net.ipv4.ip_forward=1'
+      run_cmd 'sudo rm -f /tmp/gpg; wget https://download.docker.com/linux/ubuntu/gpg -O /tmp/gpg; test $(ls -l /tmp/gpg | awk '"'"'{print $5}'"'"') -gt 0'
+      run_cmd 'sudo apt-key add /tmp/gpg'
+      run_cmd '! sudo add-apt-repository  "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | grep Err:'
+      run_cmd 'sudo apt-get install -y docker-ce'
       sudo usermod -a -G docker ${username}
-      su - ${username}
-      ping www.google.com -c 1
-      ping foo -c 1
-      while [ $? -ne 0 ] ; do sleep 5 ; docker login --username ${docker_registry_username} --password ${docker_registry_password}  ; done
-      docker pull avinetworks/controller:${avi_version}
-      docker pull avinetworks/se:${avi_version}
+      #
+      # docker login if docker_registry_username and docker_registry_password are defined
+      #
+      docker_registry_username=${docker_registry_username}
+      docker_registry_password=${docker_registry_password}
+      if [[ -z "$docker_registry_username" || -z "$docker_registry_password" ]]; then
+        echo "docker_registry_username and docker_registry_password are not defined"
+      else
+        ping -c 1 foo
+        while [ $? -ne 0 ] ; do sleep 5 ; docker login --username $docker_registry_username --password $docker_registry_password ; done
+      fi
+      #
+      # Download docker images
+      #
+      run_cmd 'docker pull avinetworks/controller:${avi_version}; docker image ls | grep avinetworks/controller'
+      run_cmd 'docker pull avinetworks/se:${avi_version}; docker image ls | grep avinetworks/se'
       echo "cloud init done" | tee /tmp/cloudInitDone.log
     path: /opt/bootstrap.sh
     permissions: "0755"
