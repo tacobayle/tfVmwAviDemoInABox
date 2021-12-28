@@ -23,6 +23,7 @@ data "template_file" "avi_details" {
   template = file("templates/avi_details.yaml.template")
   vars = {
     avi_version_short = split("-", var.avi_version)[0]
+    avi_version = var.avi_version
     password = var.ubuntu_password == null ? random_string.ubuntu_password.result : var.ubuntu_password
   }
 }

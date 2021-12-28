@@ -1,6 +1,6 @@
 controller_ip: "{{ ansible_default_ipv4.address }}"
 api_version: ${avi_version_short}
-avi_version: ${avi_version_short}
+avi_version: ${avi_version}
 avi_change_version: "{{ lookup('env','AVI_VERSION_CHANGE') | default('false',true) }}"
 username: admin
 password: ${password}
