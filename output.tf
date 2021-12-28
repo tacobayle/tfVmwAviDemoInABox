@@ -23,7 +23,7 @@ output "avi_username" {
 }
 
 output "avi_password" {
-  value = "AviDemo1!"
+  value = var.ubuntu_password == null ? random_string.ubuntu_password.result : var.ubuntu_password
 }
 
 output "rdp_server" {
