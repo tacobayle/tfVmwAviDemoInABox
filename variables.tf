@@ -1,6 +1,3 @@
-#
-# variables
-#
 variable "vsphere_username" {}
 variable "vsphere_password" {}
 variable "ubuntu_password" {
@@ -10,6 +7,7 @@ variable "ubuntu_password" {
 variable "docker_registry_username" {
   sensitive = true
 }
+
 variable "docker_registry_password" {
   sensitive = true
 }
@@ -18,16 +16,24 @@ variable "ansible_version" {
   default = "2.10.7"
 }
 
-variable "vcenter" {
-  type = map
-  default = {
-    server        = "wdc-06-vc12.oc.vmware.com"
-    dc            = "wdc-06-vc12"
-    cluster       = "wdc-06-vc12c01"
-    datastore     = "wdc-06-vc12c01-vsan"
-    network       = "vxw-dvs-34-virtualwire-3-sid-6120002-wdc-06-vc12-avi-mgmt"
-    resource_pool = "wdc-06-vc12c01/Resources"
-  }
+variable "vsphere_server" {
+  default = "wdc-06-vc12.oc.vmware.com"
+}
+
+variable "vcenter_dc" {
+  default = "wdc-06-vc12"
+}
+
+variable "vcenter_cluster" {
+  default = "wdc-06-vc12c01"
+}
+
+variable "vcenter_datastore" {
+  default = "wdc-06-vc12c01-vsan"
+}
+
+variable "vcenter_network" {
+  default = "vxw-dvs-34-virtualwire-3-sid-6120002-wdc-06-vc12-avi-mgmt"
 }
 
 variable "ubuntu_ip4_address" {

@@ -1,11 +1,11 @@
 resource "random_string" "ubuntu_password" {
-  length           = 12
+  length           = 8
   special          = true
-  min_lower        = 3
-  min_upper        = 3
-  min_numeric      = 3
-  min_special      = 3
-  override_special = "%$&*_"
+  min_lower        = 2
+  min_upper        = 2
+  min_numeric      = 2
+  min_special      = 2
+  override_special = "_"
 }
 
 data "template_file" "network" {
@@ -16,6 +16,14 @@ data "template_file" "network" {
     ip4 = var.ubuntu_ip4_address
     gw4 = var.gateway4
     dns = var.nameservers
+  }
+}
+
+data "template_file" "avi_details" {
+  template = file("templates/avi_details.yaml.template")
+  vars = {
+    avi_version_short = split("-", var.avi_version)[0]
+    password = var.ubuntu_password == null ? random_string.ubuntu_password.result : var.ubuntu_password
   }
 }
 
@@ -183,6 +191,15 @@ resource "null_resource" "ansible" {
     agent = false
     user = "ubuntu"
     private_key = tls_private_key.ssh.private_key_pem
+  }
+
+  provisioner "local-exec" {
+    command = "cat > avi_details.yaml <<EOL\n${data.template_file.avi_details.rendered}\nEOL"
+  }
+
+  provisioner "file" {
+    source = "avi_details.yaml"
+    destination = "demo-in-a-box/vars/avi_details.yaml"
   }
 
   provisioner "remote-exec" {
