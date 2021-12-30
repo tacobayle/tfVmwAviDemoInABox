@@ -9,7 +9,7 @@ root_check() {
 distro_check() {
     if command -v apt-get &> /dev/null; then
         pkg_mgr="apt-get"
-        apt-get update
+#        apt-get update
     elif command -v dnf &> /dev/null; then
         pkg_mgr="dnf"
         dnf install -y firewalld        
@@ -413,5 +413,5 @@ distro_check
 playbook_install_demo
 
 check_for_args
-conclusion
+#conclusion
 
