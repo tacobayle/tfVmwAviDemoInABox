@@ -1,0 +1,18 @@
+[
+  {
+    "label" : "Terraform init",
+    "command": "terraform init"
+  },
+  {
+    "label" : "Terraform plan",
+    "command": "terraform plan -auto-approve"
+  },
+  {
+    "label" : "Terraform apply",
+    "command": "terraform apply -auto-approve"
+  },
+  {
+    "label" : "Terraform destroy",
+    "command": "terraform destroy -auto-approve"
+  }
+]

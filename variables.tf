@@ -32,6 +32,10 @@ variable "vcenter_datastore" {
   default = "wdc-06-vc12c01-vsan"
 }
 
+variable "dhcp" {
+  default = true
+}
+
 variable "vcenter_network" {
   default = "vxw-dvs-34-virtualwire-3-sid-6120002-wdc-06-vc12-avi-mgmt"
 }
@@ -49,8 +53,11 @@ variable "nameservers" {
 }
 
 variable "avi_version" {
-  default = "21.1.2-9124-20211013.191102"
+  default = "21.1.3-9051-20211219.182134"
 }
+
+# version 21.1.2: 21.1.2-9124-20211013.191102
+# version 21.1.3: 21.1.3-9051-20211219.182134
 
 variable "ssh_key" {
   type = map
@@ -60,10 +67,6 @@ variable "ssh_key" {
     private_key_name = "ssh_private_key_tf_ubuntu"
     file_permission      = "0600"
   }
-}
-
-variable "dhcp" {
-  default = true
 }
 
 variable "content_library" {

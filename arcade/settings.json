@@ -1,0 +1,8 @@
+{
+  "title": "Avi Demo in a Box",
+  "description": "Deploy An Avi Controller, An Application, A RDP Server within one VM to demonstrate Avi",
+  "author": "nbayle@vmware.com",
+  "documentation": "",
+  "runner": "amirmran/terraform-runner",
+  "logo": ["avi", "terraform", "ansible"]
+}

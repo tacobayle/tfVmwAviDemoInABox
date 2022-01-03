@@ -1,0 +1,135 @@
+[
+  {
+    "title": "vsphere Details",
+    "vars": [
+      {
+        "name": "vsphere_username",
+        "required": true,
+        "type": "string",
+        "default": "username"
+      },
+      {
+        "name": "vsphere_password",
+        "required": true,
+        "type": "password",
+        "default": ""
+      },
+      {
+        "name": "vsphere_server",
+        "required": true,
+        "type": "string",
+        "default": "IP or FQDN"
+      }
+    ]
+  },
+  {
+    "title": "vCenter Details",
+    "vars": [
+      {
+        "name": "vcenter_dc",
+        "required": true,
+        "type": "api_list",
+        "default": [],
+        "api_url": "https://raw.githubusercontent.com/tacobayle/bash/master/vcenter/get_dc.sh",
+        "api_args" : [
+          "vsphere_server",
+          "vsphere_username",
+          "vsphere_password"
+        ]
+      },
+      {
+        "name": "vcenter_cluster",
+        "required": true,
+        "type": "api_list",
+        "default": [],
+        "api_url": "https://raw.githubusercontent.com/tacobayle/bash/master/vcenter/get_cluster.sh",
+        "api_args" : [
+          "vsphere_server",
+          "vsphere_username",
+          "vsphere_password"
+        ]
+      },
+      {
+        "name": "vcenter_datastore",
+        "required": true,
+        "type": "api_list",
+        "default": [],
+        "api_url": "https://raw.githubusercontent.com/tacobayle/bash/master/vcenter/get_datastore.sh",
+        "api_args" : [
+          "vsphere_server",
+          "vsphere_username",
+          "vsphere_password"
+        ]
+      },
+      {
+        "name": "vcenter_network",
+        "required": true,
+        "type": "api_list",
+        "default": [],
+        "api_url": "https://raw.githubusercontent.com/tacobayle/bash/master/vcenter/get_network.sh",
+        "api_args" : [
+          "vsphere_server",
+          "vsphere_username",
+          "vsphere_password"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "IP parameters",
+    "vars": [
+      {
+        "name": "dhcp",
+        "required": true,
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "ubuntu_ip4_address",
+        "required": false,
+        "type": "string",
+        "default": "10.206.112.56/22"
+      },
+      {
+        "name": "gateway4",
+        "required": false,
+        "type": "string",
+        "default": "10.206.112.1"
+      },
+      {
+        "name": "nameservers",
+        "required": false,
+        "type": "string",
+        "default": "10.206.8.130, 10.206.8.130, 10.206.8.131"
+      }
+    ]
+  },
+  {
+    "title": "Avi parameters",
+    "vars": [
+      {
+        "name": "avi_version",
+        "required": true,
+        "type": "list",
+        "default": ["21.1.2-9124-20211013.191102", "21.1.3-9051-20211219.182134"]
+      }
+    ]
+  },
+  {
+    "title": "Docker Account",
+    "vars": [
+      {
+        "name": "docker_registry_username",
+        "required": false,
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "docker_registry_password",
+        "required": false,
+        "type": "password",
+        "default": ""
+      }
+    ]
+  }
+]
