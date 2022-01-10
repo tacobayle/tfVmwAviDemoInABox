@@ -32,5 +32,6 @@
         tenant: "{{ tenant | default('admin',true) }}"
         api_version: "{{ api_version }}"
         welcome_workflow_complete: yes
+        default_license_tier: "ENTERPRISE"
       when: api_results.obj.welcome_workflow_complete is defined and api_results.obj.welcome_workflow_complete == false
       
